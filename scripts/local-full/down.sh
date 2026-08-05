@@ -12,6 +12,5 @@ docker compose \
   --env-file .env \
   --env-file .env.local-full \
   -f docker-compose.yaml \
-  -f docker-compose.ext.yaml \
   -f docker-compose.local-full.yaml \
-  down
+  down --remove-orphans
