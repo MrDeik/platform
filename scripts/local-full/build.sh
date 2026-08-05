@@ -3,6 +3,7 @@ set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 PARALLELISM="${HULY_BUILD_PARALLELISM:-6}"
+RUSH_BOOTSTRAP="$REPO_ROOT/common/scripts/install-run-rush.js"
 
 cd "$REPO_ROOT"
 
@@ -17,8 +18,8 @@ if [[ "$NODE_MAJOR" != "22" ]]; then
   exit 1
 fi
 
-if ! command -v rush >/dev/null 2>&1; then
-  echo "ERROR: Rush is not installed. Run: npm install -g @microsoft/rush" >&2
+if [[ ! -f "$RUSH_BOOTSTRAP" ]]; then
+  echo "ERROR: Rush bootstrap was not found at $RUSH_BOOTSTRAP." >&2
   exit 1
 fi
 
@@ -30,7 +31,7 @@ fi
 echo "Building the full local image set with parallelism=$PARALLELISM"
 echo "Source commit: $(git rev-parse HEAD)"
 
-rush docker:build -p "$PARALLELISM" \
+node "$RUSH_BOOTSTRAP" docker:build -p "$PARALLELISM" \
   --to @hcengineering/pod-server \
   --to @hcengineering/pod-front \
   --to @hcengineering/prod \
