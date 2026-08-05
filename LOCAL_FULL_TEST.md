@@ -44,7 +44,7 @@ node common/scripts/install-run-rush.js install
 HULY_BUILD_PARALLELISM=6 scripts/local-full/build.sh
 ```
 
-The build includes all local images from the Collective full target set plus `@hcengineering/pod-notification` for Web Push testing.
+The build includes the Collective application and service images plus `@hcengineering/pod-notification` for Web Push testing. SaaS billing and payment images are intentionally excluded.
 
 ## Windows hosts entry
 
@@ -76,7 +76,10 @@ scripts/local-full/status.sh
 scripts/local-full/logs.sh
 scripts/local-full/logs.sh love
 scripts/local-full/logs.sh livekit-egress
+scripts/local-full/logs.sh --follow love
 ```
+
+Without `--follow`, the logs command prints recent lines and exits.
 
 ## Record resource usage
 
@@ -98,6 +101,6 @@ This intentionally does not pass `-v`, so named volumes are preserved.
 
 - This is a development/test configuration, not production Compose.
 - CockroachDB is retained because the current PostgreSQL dev overlay disables Communication API paths.
-- Billing and payment are started using the existing sandbox-capable extended overlay.
+- Billing and payment are not built or started because they monetize Huly subscriptions and are unrelated to normal self-hosted use.
 - AI, SMTP, OAuth integrations and translation still require external credentials even though their images are built.
 - Video/audio recording requires LiveKit Egress; the overlay includes it and writes through the local S3-compatible MinIO path.
