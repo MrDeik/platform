@@ -1,8 +1,17 @@
 # Local full-feature overlay for Platform-Collective/platform.
-# Run together with dev/docker-compose.yaml and dev/docker-compose.ext.yaml.
-# Intended for Docker Desktop / WSL2 testing only; not a production configuration.
+# Run together with dev/docker-compose.yaml.
+# Billing and payment are intentionally excluded: this environment tests Huly itself,
+# not SaaS subscription sales. Intended for Docker Desktop / WSL2 testing only.
 
 services:
+  redpanda:
+    healthcheck:
+      test: ["CMD", "rpk", "cluster", "info"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
   livekit:
     image: ${LIVEKIT_SERVER_IMAGE:-livekit/livekit-server:v1.12.0}
     command:
@@ -101,3 +110,5 @@ services:
       - LOVE_ENDPOINT=http://huly.local:8097
       - LIVEKIT_WS=ws://huly.local:7880
       - PUSH_PUBLIC_KEY=${PUSH_PUBLIC_KEY}
+      - PAYMENT_URL=
+      - BILLING_URL=
