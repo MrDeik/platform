@@ -8,10 +8,11 @@ Pinned source baseline: `b75aae3a584e22dec20a7ed2951ea3e1de5a88c1`.
 
 - Docker Desktop with WSL2 integration enabled
 - source cloned inside the WSL Linux filesystem, not under `/mnt/c`
-- Node.js 22
-- Microsoft Rush
+- Node.js 22 managed by NVM
 - at least 80 GB free disk space; 100–120 GB is recommended
 - 16–20 GB assigned to Docker Desktop for the full stack
+
+Do not install Microsoft Rush globally. Some Linux distributions already provide an unrelated GNU command named `rush`. This branch always uses the repository bootstrap at `common/scripts/install-run-rush.js`.
 
 ## Clone
 
@@ -21,13 +22,23 @@ cd ~/projects/huly-platform
 chmod +x scripts/local-full/*.sh
 ```
 
-## Install and build
+## Install NVM and Node.js
 
 ```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.6/install.sh | bash
+source ~/.bashrc
+
+command -v nvm
 nvm install 22
+nvm alias default 22
 nvm use 22
-npm install -g @microsoft/rush
-rush install
+node --version
+```
+
+## Install dependencies and build
+
+```bash
+node common/scripts/install-run-rush.js install
 
 # Default parallelism is 6. Lower it on a 16 GB machine.
 HULY_BUILD_PARALLELISM=6 scripts/local-full/build.sh
