@@ -59,10 +59,8 @@ node "$RUSH_BOOTSTRAP" docker:build -p "$PARALLELISM" \
   --to @hcengineering/pod-external \
   --to @hcengineering/pod-backup \
   --to @hcengineering/backup-api-pod \
-  --to @hcengineering/pod-billing \
   --to @hcengineering/pod-process \
   --to @hcengineering/pod-rating \
-  --to @hcengineering/pod-payment \
   --to @hcengineering/pod-worker \
   --to @hcengineering/pod-events-processor
 
