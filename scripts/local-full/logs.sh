@@ -41,7 +41,7 @@ done
 
 cd "$DEV_DIR"
 COMPOSE=(docker compose -p "$PROJECT_NAME" --env-file .env --env-file .env.local-full \
-  -f docker-compose.yaml -f docker-compose.ext.yaml -f docker-compose.local-full.yaml)
+  -f docker-compose.yaml -f docker-compose.local-full.yaml)
 
 ARGS=(logs --tail="$TAIL_LINES" --no-color)
 if [[ "$FOLLOW" == true ]]; then
