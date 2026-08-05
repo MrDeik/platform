@@ -9,7 +9,7 @@ OUTPUT="${2:-$REPO_ROOT/huly-stats-$(date +%Y%m%d-%H%M%S).csv}"
 
 cd "$DEV_DIR"
 COMPOSE=(docker compose -p "$PROJECT_NAME" --env-file .env --env-file .env.local-full \
-  -f docker-compose.yaml -f docker-compose.ext.yaml -f docker-compose.local-full.yaml)
+  -f docker-compose.yaml -f docker-compose.local-full.yaml)
 
 CONTAINERS="$("${COMPOSE[@]}" ps -q)"
 if [[ -z "$CONTAINERS" ]]; then
