@@ -9,23 +9,15 @@ PROJECT_NAME="${HULY_COMPOSE_PROJECT:-huly-collective-local}"
 
 cd "$DEV_DIR"
 
-docker compose \
+COMPOSE=(docker compose \
   -p "$PROJECT_NAME" \
   --env-file .env \
   --env-file .env.local-full \
   -f docker-compose.yaml \
-  -f docker-compose.ext.yaml \
-  -f docker-compose.local-full.yaml \
-  config --quiet
+  -f docker-compose.local-full.yaml)
 
-docker compose \
-  -p "$PROJECT_NAME" \
-  --env-file .env \
-  --env-file .env.local-full \
-  -f docker-compose.yaml \
-  -f docker-compose.ext.yaml \
-  -f docker-compose.local-full.yaml \
-  up -d --force-recreate
+"${COMPOSE[@]}" config --quiet
+"${COMPOSE[@]}" up -d --force-recreate --remove-orphans
 
 echo
 echo "Huly:      http://huly.local:8087"
